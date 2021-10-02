@@ -66,19 +66,19 @@ impl PackageRow {
         match self.state {
             PackageState::Enabled => {
                 action_text = if settings.disable_mode { "Disable" } else { "Uninstall" };
-                button_style = style::PackageButton::Uninstall;
+                button_style = style::PackageButton::Uninstall(settings.theme.palette);
             }
             PackageState::Disabled => {
                 action_text = "Enable";
-                button_style = style::PackageButton::Restore;
+                button_style = style::PackageButton::Restore(settings.theme.palette);
             }
             PackageState::Uninstalled => {
                 action_text = "Restore";
-                button_style = style::PackageButton::Restore;
+                button_style = style::PackageButton::Restore(settings.theme.palette);
             }
             PackageState::All => {
                 action_text = "Error";
-                button_style = style::PackageButton::Restore;
+                button_style = style::PackageButton::Restore(settings.theme.palette);
                 warn!("Incredible! Something impossible happenned!");
             }
             
@@ -90,7 +90,7 @@ impl PackageRow {
         {
 
             selection_checkbox = Checkbox::new(self.selected, "", Message::ToggleSelection)
-                .style(style::SelectionCheckBox::Enabled);
+                .style(style::SelectionCheckBox::Enabled(settings.theme.palette));
 
             action_btn = Button::new(
                 &mut self.action_btn_state,
@@ -100,7 +100,7 @@ impl PackageRow {
 
         } else {
             selection_checkbox = Checkbox::new(self.selected, "", Message::ToggleSelection)
-                .style(style::SelectionCheckBox::Disabled);
+                .style(style::SelectionCheckBox::Disabled(settings.theme.palette));
 
             action_btn = Button::new(
                 &mut self.action_btn_state,
@@ -119,7 +119,7 @@ impl PackageRow {
                                     .style(button_style)
                     )
                 )
-                .style(style::PackageRow)
+                .style(style::PackageRow(settings.theme.palette))
                 .width(Length::Fill)
                 .on_press(Message::PackagePressed)
 

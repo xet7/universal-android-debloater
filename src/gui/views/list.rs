@@ -268,7 +268,8 @@ impl List {
                 &self.input_value,
                 Message::SearchInputChanged,
             )
-            .padding(5);
+            .padding(5)
+            .style(style::SearchInput(settings.theme.palette));
 
             // let package_amount = Text::new(format!("{} packages found", packages.len()));
             
@@ -277,7 +278,9 @@ impl List {
                     phone.user_list.clone(),
                     self.selected_user,
                     Message::UserSelected,
-                ).width(Length::Units(85));
+                )
+                .width(Length::Units(85))
+                .style(style::PickList(settings.theme.palette));
 
             let divider = Space::new(Length::Fill, Length::Shrink);
 
@@ -286,21 +289,25 @@ impl List {
                         &UadList::ALL[..],
                         self.selected_list,
                         Message::ListSelected,
-                    );
+                    )
+                .style(style::PickList(settings.theme.palette));
 
             let package_state_picklist = PickList::new(
                         &mut self.package_state_picklist,
                         &PackageState::ALL[..],
                         self.selected_package_state,
                         Message::PackageStateSelected,
-                    );
+                    )
+                .style(style::PickList(settings.theme.palette));
+
 
             let removal_picklist = PickList::new(
                         &mut self.removal_picklist,
                         &Removal::ALL[..],
                         self.selected_removal,
                         Message::RemovalSelected,
-                    );
+                    )
+                .style(style::PickList(settings.theme.palette));
 
             let control_panel = Row::new()
                 .width(Length::Fill)
@@ -335,7 +342,7 @@ impl List {
                 .spacing(2)
                 .align_items(Alignment::Start)
                 .height(Length::FillPortion(6))
-                .style(style::Scrollable);
+                .style(style::Scrollable(settings.theme.palette));
 
             // let mut packages_v: Vec<&str> = self.packages.lines().collect();
             let description_panel = Container::new(
@@ -343,7 +350,7 @@ impl List {
                 .align_items(Alignment::Center)
                 .push(Text::new(&self.description))
             )
-            .style(style::Description)
+            .style(style::Description(settings.theme.palette))
             .padding(10)
             .height(Length::FillPortion(2))
             .width(Length::Fill);
@@ -361,26 +368,26 @@ impl List {
                 )
                 .on_press(Message::ApplyActionOnSelection(Action::Restore))
                 .padding(5)
-                .style(style::PrimaryButton::Enabled);
+                .style(style::PrimaryButton(settings.theme.palette));
 
             let apply_remove_selection = Button::new(
                 &mut self.apply_remove_selection, 
                 Text::new(format!("{} selection ({})", remove_action, self.selection.enabled)))
                 .on_press(Message::ApplyActionOnSelection(Action::Remove))
                 .padding(5)
-                .style(style::PrimaryButton::Enabled);
+                .style(style::PrimaryButton(settings.theme.palette));
 
             let select_all_btn = Button::new(&mut self.select_all_btn_state, Text::new("Select all"))
                 .padding(5)
                 .on_press(Message::SelectAllPressed)
-                .style(style::PrimaryButton::Enabled);
+                .style(style::PrimaryButton(settings.theme.palette));
 
             let export_selection_btn = Button::new(
                 &mut self.export_selection_btn_state, 
                 Text::new(format!("Export current selection ({})", self.selection.selected_packages.len())))
                 .padding(5)
                 .on_press(Message::ExportSelectionPressed)
-                .style(style::PrimaryButton::Enabled);
+                .style(style::PrimaryButton(settings.theme.palette));
 
             let action_row = Row::new()
                 .width(Length::Fill)
@@ -405,10 +412,10 @@ impl List {
             Container::new(content)
                 .height(Length::Fill)
                 .padding(10)
-                .style(style::Content)
+                .style(style::Content(settings.theme.palette))
                 .into()
         } else {
-            loading_data()
+            loading_data(settings)
         }
     }
 
@@ -416,7 +423,7 @@ impl List {
 
         let list_filter: UadList = self.selected_list.unwrap();
         let package_filter: PackageState = self.selected_package_state.unwrap();
-        let removal_filter: Removal = self.selected_removal.unwrap(); 
+        let removal_filter: Removal = self.selected_removal.unwrap();
 
         self.filtered_packages = self.phone_packages[self.selected_user.unwrap().index]
             .iter()
@@ -434,7 +441,7 @@ impl List {
 }
 
 
-fn loading_data<'a>() -> Element<'a, Message> {
+fn loading_data<'a>(settings: &Settings) -> Element<'a, Message> {
     Container::new(
         Text::new("Pulling packages from the phone. Please wait...")
             .horizontal_alignment(alignment::Horizontal::Center)
@@ -445,6 +452,6 @@ fn loading_data<'a>() -> Element<'a, Message> {
     .height(Length::Fill)
     .center_y()
     .center_x()
-    .style(style::Content)
+    .style(style::Content(settings.theme.palette))
     .into()
 }

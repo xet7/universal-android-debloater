@@ -1,12 +1,14 @@
 use crate::gui::style;
+use crate::core::theme::{Theme};
 
 use iced::{Checkbox, Column, Container, Element, Length, Text, Space};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Settings {
     pub expert_mode: bool,
     pub disable_mode: bool,
     pub multi_user_mode: bool,
+    pub theme: Theme,
 }
 
 impl Default for Settings {
@@ -15,6 +17,7 @@ impl Default for Settings {
             expert_mode: false,
             disable_mode: false,
             multi_user_mode: true,
+            theme: Theme::dark(),
         }
     }
 }
@@ -95,7 +98,7 @@ impl Settings {
             .padding(10)
             .width(Length::Fill)
             .height(Length::Fill)
-            .style(style::Content)
+            .style(style::Content(self.theme.palette))
             .into()
     }
 }
