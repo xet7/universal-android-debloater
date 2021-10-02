@@ -131,7 +131,7 @@ impl Application for UadGui {
         let apps_refresh_btn = Button::new(&mut self.apps_refresh_btn, refresh_btn_display)
             .on_press(Message::AppsRefreshPress)
             .padding(5)
-            .style(style::PrimaryButton(self.settings_view.theme.palette));
+            .style(style::RefreshButton(self.settings_view.theme.palette));
 
         let uad_version = Text::new(env!("CARGO_PKG_VERSION"));
 

@@ -37,10 +37,11 @@ pub struct ColorPalette {
 }
 
 impl Theme {
-    pub fn all() -> Vec<(String, Theme)> {
+    pub fn all() -> Vec<Theme> {
         vec![
-            ("Dark".to_string(), Theme::dark()),
-            ("Light".to_string(), Theme::light()),
+            Theme::dark(),
+            Theme::light(),
+            Theme::dracula(),
         ]
     }
 
@@ -54,13 +55,13 @@ impl Theme {
                 },
                 normal: NormalColors {
                     primary: hex_to_color("#3f2b56").unwrap(),
-                    secondary: hex_to_color("#4a3c1c").unwrap(),
+                    secondary: hex_to_color("#386e50").unwrap(),
                     surface: hex_to_color("#828282").unwrap(),
                     error: hex_to_color("#992B2B").unwrap(),
                 },
                 bright: BrightColors {
                     primary: hex_to_color("#BA84FC").unwrap(),
-                    secondary: hex_to_color("#ffd03c").unwrap(),
+                    secondary: hex_to_color("#49eb7a").unwrap(),
                     surface: hex_to_color("#E0E0E0").unwrap(),
                     error: hex_to_color("#C13047").unwrap(),
                 },
@@ -118,6 +119,41 @@ impl Theme {
 
 }
 
+impl PartialEq for Theme {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
+impl PartialOrd for Theme {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.name.cmp(&other.name))
+    }
+}
+
+impl Eq for Theme {}
+
+impl Ord for Theme {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.name.cmp(&other.name)
+    }
+}
+
+impl std::fmt::Display for Theme {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self.name.as_str() {
+                "Dark" => "Dark",
+                "Light" => "Light",
+                "Dracula" => "Dracula",
+                _ => "Unknown theme",
+            }
+        )
+    }
+}
+
 fn hex_to_color(hex: &str) -> Option<Color> {
     if hex.len() == 7 {
         let hash = &hex[0..1];
@@ -137,24 +173,4 @@ fn hex_to_color(hex: &str) -> Option<Color> {
     }
 
     None
-}
-
-impl PartialEq for Theme {
-    fn eq(&self, other: &Self) -> bool {
-        self.name == other.name
-    }
-}
-
-impl PartialOrd for Theme {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.name.cmp(&other.name))
-    }
-}
-
-impl Eq for Theme {}
-
-impl Ord for Theme {
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.name.cmp(&other.name)
-    }
 }

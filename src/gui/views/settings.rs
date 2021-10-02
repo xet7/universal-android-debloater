@@ -1,7 +1,9 @@
 use crate::gui::style;
 use crate::core::theme::{Theme};
 
-use iced::{Checkbox, Column, Container, Element, Length, Text, Space};
+use iced::{Checkbox, Column, Container, Element, Length, Text, Space, 
+    pick_list, PickList,
+    };
 
 #[derive(Debug, Clone)]
 pub struct Settings {
@@ -9,6 +11,7 @@ pub struct Settings {
     pub disable_mode: bool,
     pub multi_user_mode: bool,
     pub theme: Theme,
+    theme_picklist: pick_list::State<Theme>,
 }
 
 impl Default for Settings {
@@ -17,17 +20,18 @@ impl Default for Settings {
             expert_mode: false,
             disable_mode: false,
             multi_user_mode: true,
-            theme: Theme::dark(),
+            theme: Theme::dracula(),
+            theme_picklist: pick_list::State::default()
         }
     }
 }
 
-#[allow(clippy::enum_variant_names)]
 #[derive(Debug, Clone)]
 pub enum Message {
     ExpertMode(bool),
     DisableMode(bool),
     MultiUserMode(bool),
+    ApplyTheme(Theme),
 }
 
 impl Settings {
@@ -44,12 +48,25 @@ impl Settings {
             Message::MultiUserMode(toggled) => {
                 info!("Multi-user mode {}", if toggled {"enabled"} else {"disabled"});
                 self.multi_user_mode = toggled;
+            },
+            Message::ApplyTheme(theme) => {
+                self.theme = theme;
             }
         }
     }
 
-    pub fn view(&self) -> Element<Message> {
-        let about_text = Text::new("General");
+    pub fn view(&mut self) -> Element<Message> {
+        let general_category_text = Text::new("General").size(25);
+
+        let theme_picklist = PickList::new(
+            &mut self.theme_picklist,
+            Theme::all(),
+            Some(self.theme.clone()),
+            Message::ApplyTheme,
+            )
+            .style(style::PickList(self.theme.palette));
+
+        let uad_category_text = Text::new("UAD").size(25);
 
         let expert_mode_descr = Text::new("Most of unsafe packages are known to bootloop the device if removed.")
             .size(15)
@@ -84,7 +101,11 @@ impl Settings {
         let content = Column::new()
             .width(Length::Fill)
             .spacing(10)
-            .push(about_text)
+            .push(general_category_text)
+            .push(Text::new("Theme"))
+            .push(theme_picklist)
+            .push(Space::new(Length::Fill, Length::Shrink))
+            .push(uad_category_text)
             .push(expert_mode_checkbox)
             .push(expert_mode_descr)
             .push(Space::new(Length::Fill, Length::Shrink))

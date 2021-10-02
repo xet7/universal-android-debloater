@@ -15,7 +15,7 @@ impl container::StyleSheet for Content {
     fn style(&self) -> container::Style {
         container::Style {
             background: Some(Background::Color(self.0.base.background)),
-            text_color: Some(self.0.normal.surface),
+            text_color: Some(self.0.bright.surface),
             ..container::Style::default()
         }
     }
@@ -60,6 +60,33 @@ impl button::StyleSheet for PrimaryButton {
     }
 }
 
+pub struct RefreshButton(pub ColorPalette);
+impl button::StyleSheet for RefreshButton {
+    fn active(&self) -> button::Style {
+        button::Style {
+            border_color: Color {
+                a: 0.5,
+                ..self.0.bright.primary
+            },
+            border_width: 1.0,
+            border_radius: 2.0,
+            text_color: self.0.bright.primary,
+            ..button::Style::default()
+        }
+    }
+
+    fn hovered(&self) -> button::Style {
+        button::Style {
+            background: Some(Background::Color(Color {
+                a: 0.25,
+                ..self.0.normal.surface
+            })),
+            text_color: self.0.bright.primary,
+            ..self.active()
+        }
+    }
+}
+
 
 pub enum PackageButton {
     Uninstall(ColorPalette),
@@ -82,11 +109,11 @@ impl button::StyleSheet for PackageButton {
             Self::Restore(palette) => button::Style {
                 border_color: Color {
                     a: 0.5,
-                    ..palette.normal.primary
+                    ..palette.normal.secondary
                 },
                 border_width: 1.0,
                 border_radius: 2.0,
-                text_color: palette.bright.primary,
+                text_color: palette.bright.secondary,
                 ..button::Style::default()
             },
         }
@@ -173,7 +200,7 @@ impl container::StyleSheet for Description {
     fn style(&self) -> container::Style {
         container::Style {
             background: Some(Background::Color(self.0.base.foreground)),
-            text_color: Some(self.0.normal.surface),
+            text_color: Some(self.0.bright.surface),
             ..container::Style::default()
         }
     }
@@ -248,7 +275,6 @@ impl checkbox::StyleSheet for SelectionCheckBox {
                 border_radius: 2.0,
                 border_width: 2.0,
                 border_color: palette.bright.primary,
-                ..self.active(is_checked)
             },
 
             Self::Disabled(_) => checkbox::Style {
