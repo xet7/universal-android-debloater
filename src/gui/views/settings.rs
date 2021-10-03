@@ -1,6 +1,6 @@
 use crate::gui::style;
 use crate::core::theme::{Theme};
-
+use crate::core::sync::get_android_sdk;
 use iced::{Checkbox, Column, Container, Element, Length, Text, Space, 
     pick_list, PickList,
     };
@@ -18,8 +18,8 @@ impl Default for Settings {
     fn default() -> Self {
         Self {
             expert_mode: false,
-            disable_mode: false,
-            multi_user_mode: true,
+            disable_mode: get_android_sdk() < 26,
+            multi_user_mode: get_android_sdk() > 21,
             theme: Theme::dracula(),
             theme_picklist: pick_list::State::default()
         }
