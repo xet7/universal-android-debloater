@@ -172,7 +172,7 @@ impl button::StyleSheet for PackageRow {
     fn active(&self) -> button::Style {
         button::Style {
             background: Some(Background::Color(self.0.base.foreground)),
-            text_color: Color::WHITE,
+            text_color: self.0.bright.surface,
             ..button::Style::default()
         }
     }
@@ -189,7 +189,7 @@ impl button::StyleSheet for PackageRow {
     fn pressed(&self) -> button::Style {
             button::Style {
                 background: Some(Background::Color(Color::from_rgb(0.35, 0.43, 0.46))),
-                text_color: Color::WHITE,
+                text_color: self.0.bright.primary,
                 ..self.active()
             }
         }
