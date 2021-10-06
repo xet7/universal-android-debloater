@@ -20,7 +20,7 @@ impl Default for Settings {
             expert_mode: false,
             disable_mode: get_android_sdk() < 26,
             multi_user_mode: get_android_sdk() > 21,
-            theme: Theme::dracula(),
+            theme: Theme::lupin(),
             theme_picklist: pick_list::State::default()
         }
     }
@@ -70,7 +70,7 @@ impl Settings {
 
         let expert_mode_descr = Text::new("Most of unsafe packages are known to bootloop the device if removed.")
             .size(15)
-            .color(style::GREY_SMALL_SETTINGS_COLOR);
+            .color(self.theme.palette.normal.surface);
 
         let expert_mode_checkbox = Checkbox::new(
             self.expert_mode, 
@@ -80,7 +80,7 @@ impl Settings {
 
         let disable_mode_descr = Text::new("Default mode on older phone (< Android 8.0) where uninstalled packages can't be restored.")
             .size(15)
-            .color(style::GREY_SMALL_SETTINGS_COLOR);
+            .color(self.theme.palette.normal.surface);
 
         let disable_mode_checkbox = Checkbox::new(
             self.disable_mode, 
@@ -90,7 +90,7 @@ impl Settings {
 
         let multi_user_mode_descr = Text::new("Disabling this setting will typically prevent affecting your work profile")
             .size(15)
-            .color(style::GREY_SMALL_SETTINGS_COLOR);
+            .color(self.theme.palette.normal.surface);
 
         let multi_user_mode_checkbox = Checkbox::new(
             self.multi_user_mode, 

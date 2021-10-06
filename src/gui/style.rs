@@ -4,12 +4,6 @@ use iced::{
 };
 use crate::core::theme::ColorPalette;
 
-pub const GREY_SMALL_SETTINGS_COLOR: Color = Color::from_rgb (
-    211_f32 / 255.0,
-    211_f32 / 255.0,
-    211_f32 / 255.0,
-);
-
 pub struct Content(pub ColorPalette);
 impl container::StyleSheet for Content {
     fn style(&self) -> container::Style {
@@ -32,14 +26,13 @@ impl container::StyleSheet for NavigationContainer {
     }
 }
 
-
 pub struct PrimaryButton(pub ColorPalette);
 impl button::StyleSheet for PrimaryButton {
     fn active(&self) -> button::Style {
         button::Style {
             border_color: Color {
                 a: 0.5,
-                ..self.0.normal.primary
+                ..self.0.bright.primary
             },
             border_width: 1.0,
             border_radius: 2.0,
@@ -52,7 +45,7 @@ impl button::StyleSheet for PrimaryButton {
         button::Style {
             background: Some(Background::Color(Color {
                 a: 0.25,
-                ..self.0.normal.primary
+                ..self.0.normal.surface
             })),
             text_color: self.0.bright.primary,
             ..self.active()
@@ -99,7 +92,7 @@ impl button::StyleSheet for PackageButton {
             Self::Uninstall(palette) => button::Style {
                 border_color: Color {
                     a: 0.5,
-                    ..palette.normal.error
+                    ..palette.bright.error
                 },
                 border_width: 1.0,
                 border_radius: 2.0,
@@ -109,7 +102,7 @@ impl button::StyleSheet for PackageButton {
             Self::Restore(palette) => button::Style {
                 border_color: Color {
                     a: 0.5,
-                    ..palette.normal.secondary
+                    ..palette.bright.secondary
                 },
                 border_width: 1.0,
                 border_radius: 2.0,
@@ -139,6 +132,7 @@ impl button::StyleSheet for PackageButton {
             },
         }
     }
+
     fn disabled(&self) -> button::Style {
         match self {
             Self::Restore(palette) => button::Style {
@@ -155,11 +149,11 @@ impl button::StyleSheet for PackageButton {
             Self::Uninstall(palette) => button::Style {
                 background: Some(Background::Color(Color {
                 a: 0.05,
-                ..palette.normal.primary
+                ..palette.normal.error
                 })),
                 text_color: Color {
                     a: 0.50,
-                    ..palette.bright.primary
+                    ..palette.normal.error
                 },
                 ..self.active()
             },
@@ -258,7 +252,7 @@ impl checkbox::StyleSheet for SelectionCheckBox {
                 border_color: palette.normal.primary,
             },
             Self::Disabled(palette) => checkbox::Style {
-                background: Background::Color(palette.base.background),
+                background: Background::Color(palette.base.foreground),
                 checkmark_color: palette.bright.primary,
                 border_radius: 2.0,
                 border_width: 1.0,

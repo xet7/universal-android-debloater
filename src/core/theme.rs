@@ -41,7 +41,7 @@ impl Theme {
         vec![
             Theme::dark(),
             Theme::light(),
-            Theme::dracula(),
+            Theme::lupin(),
         ]
     }
 
@@ -74,18 +74,18 @@ impl Theme {
             name: "Light".to_string(),
             palette: ColorPalette {
                 base: BaseColors {
-                    background: hex_to_color("#ffffff").unwrap(),
-                    foreground: hex_to_color("#F5F5F5").unwrap(),
+                    background: hex_to_color("#EEEEEE").unwrap(),
+                    foreground: hex_to_color("#E0E0E0").unwrap(),
                 },
                 normal: NormalColors {
-                    primary: hex_to_color("#DFDBFF").unwrap(),
+                    primary: hex_to_color("#673AB7").unwrap(),
                     secondary: hex_to_color("#F9D659").unwrap(),
-                    surface: hex_to_color("#828282").unwrap(),
+                    surface: hex_to_color("#818181").unwrap(),
                     error: hex_to_color("#992B2B").unwrap(),
                 },
                 bright: BrightColors {
-                    primary: hex_to_color("#9580ff").unwrap(),
-                    secondary: hex_to_color("#EAA326").unwrap(),
+                    primary: hex_to_color("#673AB7").unwrap(),
+                    secondary: hex_to_color("#3797A4").unwrap(),
                     surface: hex_to_color("#000000").unwrap(),
                     error: hex_to_color("#C13047").unwrap(),
                 },
@@ -93,9 +93,9 @@ impl Theme {
         }
     }
 
-    pub fn dracula() -> Theme {
+    pub fn lupin() -> Theme {
         Theme {
-            name: "Dracula".to_string(),
+            name: "Lupin".to_string(),
             palette: ColorPalette {
                 base: BaseColors {
                     background: hex_to_color("#282a36").unwrap(),
@@ -111,7 +111,7 @@ impl Theme {
                     primary: hex_to_color("#bd94f9").unwrap(),
                     secondary: hex_to_color("#49eb7a").unwrap(),
                     surface: hex_to_color("#f4f8f3").unwrap(),
-                    error: hex_to_color("#ff7ac6").unwrap(),
+                    error: hex_to_color("#cc0000").unwrap(),
                 },
             },
         }
@@ -147,7 +147,7 @@ impl std::fmt::Display for Theme {
             match self.name.as_str() {
                 "Dark" => "Dark",
                 "Light" => "Light",
-                "Dracula" => "Dracula",
+                "Lupin" => "Lupin",
                 _ => "Unknown theme",
             }
         )
