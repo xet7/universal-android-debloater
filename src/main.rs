@@ -8,7 +8,6 @@ use fern::{
     FormatCallback,
 };
 use log::Record;
-use std::env;
 use std::{fmt::Arguments, fs::OpenOptions};
 
 mod core;
@@ -16,7 +15,6 @@ mod gui;
 
 fn main() {
     setup_logger().expect("setup logging");
-    env::set_var("ANDROID_SERIAL", "usb:1-1");
     gui::UadGui::start();
 }
 

@@ -21,9 +21,9 @@ pub struct Phone {
 impl Default for Phone {
     fn default() -> Self {
         Self {
-            model: get_phone_brand(),
-            android_sdk: get_android_sdk(),
-            user_list: get_user_list(),
+            model: "fetching devices...".to_string(),
+            android_sdk: 0,
+            user_list: vec![],
             adb_id: "".to_string(),
         }
     }
